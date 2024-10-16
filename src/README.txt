@@ -4,7 +4,6 @@ RUNNING JUST BASIC HOSPITAL APPLICATION COMMANDS
 
 
 
-
 Test automation framework to enahance code quality.
     For disaster response coordination system. 
     * automated unit, integration, system tests to itdentify defects early in development process
