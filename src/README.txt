@@ -2,6 +2,11 @@ RUNNING JUST BASIC HOSPITAL APPLICATION COMMANDS
     javac -d bin src/models/*.java src/services/*.java src/main/*.java
     java -cp bin main.MainApplication
 
+    Add JUNIT --> Ctrl-Shift-P, add library to two jar files in libs folder.
+        Simple test to check JUNIT install
+        javac -cp "libs/junit-4.13.2.jar;libs/hamcrest-core-1.3.jar;." test/DisasterEventTest.java
+        java -cp "libs/junit-4.13.2.jar;libs/hamcrest-core-1.3.jar;." org.junit.runner.JUnitCore test.DisasterEventTest
+
 
 Test automation framework to enahance code quality.
     For disaster response coordination system. 
