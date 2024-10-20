@@ -1,13 +1,21 @@
 package test;
 
+import models.DisasterEvent;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class DisasterEventTest {
     @Test
-    public void testExample() {
-        int expected = 42;
-        int actual = 40 + 2;
-        assertEquals(expected, actual);
+    public void testDisasterEventCreation() {
+        DisasterEvent event = new DisasterEvent("Flood", "New Orleans");
+        assertEquals("Flood", event.getEventType());
+        assertEquals("New Orleans", event.getLocation());
+    }
+
+    @Test
+    public void testToString() {
+        DisasterEvent event = new DisasterEvent("Hurricane", "Miami");
+        String expected = "Disaster Event - Type: Hurricane, Location: Miami";
+        assertEquals(expected, event.toString());
     }
 }

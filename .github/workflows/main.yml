@@ -21,17 +21,34 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '11'
-          distribution: 'temurin'  # Specify the distribution
+          distribution: 'temurin'
 
-      # Compile the Java code
+      # Create lib directory and download dependencies
+      - name: Set up dependencies
+        run: |
+          mkdir -p lib
+          wget https://repo1.maven.org/maven2/junit/junit/4.13.2/junit-4.13.2.jar -P lib/
+          wget https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar -P lib/
+
+      # Create build directories
+      - name: Create build directories
+        run: |
+          mkdir -p build/classes
+          mkdir -p build/test
+
+      # Compile main classes
       - name: Compile Java code
         run: |
-          find src/main/ -name "*.java" > sources.txt
-          javac -cp "libs/junit-4.13.2.jar:libs/hamcrest-core-1.3.jar" @sources.txt
+          javac -d build/classes -cp "lib/*:." $(find src/main -name "*.java")
+
+      # Compile test classes
+      - name: Compile test classes
+        run: |
+          javac -d build/test -cp "lib/*:build/classes:." $(find src/test -name "*.java")
 
       # Run JUnit tests
       - name: Run JUnit tests
         run: |
-          java -cp "libs/junit-4.13.2.jar:libs/hamcrest-core-1.3.jar:src/main" org.junit.runner.JUnitCore test.DisasterEventTest
+          java -cp "lib/*:build/classes:build/test" org.junit.runner.JUnitCore test.DisasterEventTest
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
