@@ -1,7 +1,7 @@
-package services;
+package main.services;
 
-import models.DisasterEvent;
-import models.ResponseTeam;
+import main.models.DisasterEvent;
+import main.models.ResponseTeam;
 
 public class DispatchService {
     public void dispatchTeam(ResponseTeam team, DisasterEvent event) {

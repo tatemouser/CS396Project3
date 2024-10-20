@@ -1,9 +1,9 @@
+package main;  
 
-
-import models.DisasterEvent;
-import models.ResponseTeam;
-import services.DispatchService;
-import services.NotificationService;
+import main.models.DisasterEvent;
+import main.models.ResponseTeam;
+import main.services.DispatchService;
+import main.services.NotificationService;
 
 public class MainApplication {
     public static void main(String[] args) {

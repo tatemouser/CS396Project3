@@ -1,6 +1,6 @@
-package services;
+package main.services;
 
-import models.DisasterEvent;
+import main.models.DisasterEvent;
 
 public class NotificationService {
     public void sendNotification(DisasterEvent event) {

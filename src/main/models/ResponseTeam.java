@@ -1,4 +1,4 @@
-package models;
+package main.models;
 
 public class ResponseTeam {
     private String teamName;

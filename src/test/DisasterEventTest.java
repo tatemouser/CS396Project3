@@ -1,6 +1,6 @@
 package test;
 
-import models.DisasterEvent;
+import main.models.DisasterEvent;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
