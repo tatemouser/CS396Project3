@@ -9,45 +9,53 @@ jobs:
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-
+      
       # Checkout repository code
       - name: Check out repository code
         uses: actions/checkout@v4
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      # Set up JDK (Java Development Kit)
+      # Set up JDK
       - name: Set up JDK 11
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'temurin'
 
-      # Create lib directory and download dependencies
-      - name: Set up dependencies
+      # Create directories and download dependencies
+      - name: Setup
         run: |
           mkdir -p lib
+          mkdir -p build/classes
+          mkdir -p build/test
           wget https://repo1.maven.org/maven2/junit/junit/4.13.2/junit-4.13.2.jar -P lib/
           wget https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar -P lib/
 
-      # Create build directories
-      - name: Create build directories
+      # List all source files
+      - name: List source files
         run: |
-          mkdir -p build/classes
-          mkdir -p build/test
+          echo "Source files found:"
+          find src -type f -name "*.java" -print
 
       # Compile main classes
       - name: Compile Java code
         run: |
-          javac -d build/classes -cp "lib/*:." $(find src/main -name "*.java")
+          javac -d build/classes \
+          -cp "lib/*:src" \
+          src/main/MainApplication.java \
+          src/main/models/*.java \
+          src/main/services/*.java
 
       # Compile test classes
       - name: Compile test classes
+        if: success()
         run: |
-          javac -d build/test -cp "lib/*:build/classes:." $(find src/test -name "*.java")
+          javac -d build/test \
+          -cp "lib/*:build/classes:src" \
+          src/test/*.java
 
       # Run JUnit tests
       - name: Run JUnit tests
+        if: success()
         run: |
           java -cp "lib/*:build/classes:build/test" org.junit.runner.JUnitCore test.DisasterEventTest
 
