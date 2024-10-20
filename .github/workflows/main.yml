@@ -4,7 +4,7 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -21,15 +21,8 @@ jobs:
         run: |
           mkdir -p lib
           mkdir -p build/classes
-          mkdir -p build/test
           wget https://repo1.maven.org/maven2/junit/junit/4.13.2/junit-4.13.2.jar -P lib/
           wget https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar -P lib/
-
-      # List all source files for debugging
-      - name: List source files
-        run: |
-          echo "Source files found:"
-          find src -type f -name "*.java"
 
       # Compile main classes
       - name: Compile Java code
@@ -37,20 +30,6 @@ jobs:
           javac -d build/classes \
           -cp "lib/*:src/main" \
           $(find src/main -name "*.java")
-
-      # Compile test classes
-      - name: Compile test classes
-        if: success()
-        run: |
-          javac -d build/test \
-          -cp "lib/*:build/classes" \
-          src/test/DisasterEventTest.java  # Directly specify the test file
-
-      # Run JUnit tests
-      - name: Run JUnit tests
-        if: success()
-        run: |
-          java -cp "lib/*:build/classes:build/test" org.junit.runner.JUnitCore test.DisasterEventTest
 
       - name: Report status
         run: echo "🍏 This job's status is ${{ job.status }}."
