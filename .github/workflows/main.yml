@@ -6,6 +6,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -30,6 +31,18 @@ jobs:
           javac -d build/classes \
           -cp "lib/*:src/main" \
           $(find src/main -name "*.java")
+
+      # Compile test classes
+      - name: Compile test code
+        run: |
+          javac -d build/classes \
+          -cp "lib/*:build/classes" \
+          $(find src/test -name "*.java")
+
+      # Run tests
+      - name: Run tests
+        run: |
+          java -cp "lib/*:build/classes" org.junit.runner.JUnitCore DisasterEventTest
 
       - name: Report status
         run: echo "🍏 This job's status is ${{ job.status }}."
