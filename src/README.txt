@@ -1,3 +1,10 @@
+Checklist
+    Github Actions 
+    JUnit Library added with simple test implemented into actions on commits
+    Jacoco Library added with simple report implemented into actions on commits
+        Creates report under details on github actions for that actions, under artificats
+        Can extract folder and open index file to see web report
+
 RUNNING JUST BASIC HOSPITAL APPLICATION COMMANDS
     javac -d bin src/models/*.java src/services/*.java src/main/*.java
     java -cp bin main.MainApplication
