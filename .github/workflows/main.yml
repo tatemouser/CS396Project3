@@ -21,6 +21,7 @@ jobs:
         run: |
           mkdir -p build/classes
           mkdir -p build/test-classes
+          mkdir -p build/reports/jacoco  # Create directory for JaCoCo reports
 
       # Compile main classes
       - name: Compile Java code
@@ -36,12 +37,25 @@ jobs:
           -cp "libs/*:build/classes:src/test" \
           $(find src/test -name "*.java")
 
-      # Run tests
+      # Run Tests with JaCoCo
       - name: Run Tests
         run: |
-          java -cp "libs/*:build/classes:build/test-classes" \
+          java -javaagent:libs/jacocoagent.jar=destfile=build/reports/jacoco/jacoco.exec \
+          -cp "libs/*:build/classes:build/test-classes" \
           org.junit.runner.JUnitCore test.DisasterEventTest
 
+      # Generate JaCoCo Report
+      - name: Generate JaCoCo Report
+        run: |
+          java -cp "libs/*:build/classes:build/test-classes:libs/jacococli.jar" \
+          org.jacoco.cli.internal.Main report build/reports/jacoco/jacoco.exec \
+          --classfiles build/classes \
+          --sourcefiles src/main \
+          --html build/reports/jacoco/html \
+          --xml build/reports/jacoco/jacoco.xml \
+          --csv build/reports/jacoco/jacoco.csv
+
+      # Report status
       - name: Report status
         if: always()
         run: echo "🍏 This job's status is ${{ job.status }}."
