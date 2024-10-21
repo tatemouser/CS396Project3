@@ -6,7 +6,6 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -17,32 +16,32 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      # Create directories and download dependencies
-      - name: Setup build environment
+      # Create build directories
+      - name: Create build directories
         run: |
-          mkdir -p lib
           mkdir -p build/classes
-          wget https://repo1.maven.org/maven2/junit/junit/4.13.2/junit-4.13.2.jar -P lib/
-          wget https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar -P lib/
+          mkdir -p build/test-classes
 
       # Compile main classes
       - name: Compile Java code
         run: |
           javac -d build/classes \
-          -cp "lib/*:src/main" \
+          -cp "libs/*:src/main" \
           $(find src/main -name "*.java")
 
       # Compile test classes
-      - name: Compile test code
+      - name: Compile Test code
         run: |
-          javac -d build/classes \
-          -cp "lib/*:build/classes" \
+          javac -d build/test-classes \
+          -cp "libs/*:build/classes:src/test" \
           $(find src/test -name "*.java")
 
       # Run tests
-      - name: Run tests
+      - name: Run Tests
         run: |
-          java -cp "lib/*:build/classes" org.junit.runner.JUnitCore DisasterEventTest
+          java -cp "libs/*:build/classes:build/test-classes" \
+          org.junit.runner.JUnitCore test.DisasterEventTest
 
       - name: Report status
+        if: always()
         run: echo "🍏 This job's status is ${{ job.status }}."
