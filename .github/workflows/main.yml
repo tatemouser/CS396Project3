@@ -21,33 +21,41 @@ jobs:
         run: |
           mkdir -p build/classes
           mkdir -p build/test-classes
-          mkdir -p build/reports/jacoco  # Create directory for JaCoCo reports
+          mkdir -p build/reports/jacoco
+          mkdir -p build/test-framework
+
+      # Compile test framework first
+      - name: Compile Test Framework
+        run: |
+          javac -d build/test-framework \
+          -cp "libs/*:src/main" \
+          $(find src/main/test/framework -name "*.java")
 
       # Compile main classes
       - name: Compile Java code
         run: |
           javac -d build/classes \
-          -cp "libs/*:src/main" \
-          $(find src/main -name "*.java")
+          -cp "libs/*:src/main:build/test-framework" \
+          $(find src/main -name "*.java" ! -path "*/test/*" ! -path "*/framework/*")
 
       # Compile test classes
       - name: Compile Test code
         run: |
           javac -d build/test-classes \
-          -cp "libs/*:build/classes:src/test" \
+          -cp "libs/*:build/classes:build/test-framework:src/test" \
           $(find src/test -name "*.java")
 
       # Run Tests with JaCoCo
       - name: Run Tests
         run: |
           java -javaagent:libs/jacocoagent.jar=destfile=build/reports/jacoco/jacoco.exec \
-          -cp "libs/*:build/classes:build/test-classes" \
+          -cp "libs/*:build/classes:build/test-classes:build/test-framework" \
           org.junit.runner.JUnitCore test.DisasterEventTest
 
       # Generate JaCoCo Report
       - name: Generate JaCoCo Report
         run: |
-          java -cp "libs/*:build/classes:build/test-classes:libs/jacococli.jar" \
+          java -cp "libs/*:build/classes:build/test-classes:build/test-framework:libs/jacococli.jar" \
           org.jacoco.cli.internal.Main report build/reports/jacoco/jacoco.exec \
           --classfiles build/classes \
           --sourcefiles src/main \
