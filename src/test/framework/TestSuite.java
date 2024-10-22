@@ -1,6 +1,7 @@
 package test.framework;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TestSuite {
     private String name;
@@ -25,7 +26,7 @@ public class TestSuite {
     public List<TestCase> getTestCasesByTag(String tag) {
         return testCases.stream()
             .filter(test -> test.getTags().contains(tag))
-            .toList();
+            .collect(Collectors.toList());  // Changed from toList() to collect(Collectors.toList())
     }
 
     public List<TestCase> getAllTestCases() {
