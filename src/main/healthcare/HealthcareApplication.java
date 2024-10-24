@@ -1,15 +1,13 @@
 // src/main/healthcare/HealthcareApplication.java
 package main.healthcare;
-/* 
+
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-
-import main.healthcare.monitoring.DeploymentMonitor;
-
-import java.time.LocalDateTime; */
+import main.healthcare.monitoring.DeploymentMonitor; 
 
 public class HealthcareApplication {
-    /* private String version;
+    private String version;
     private Map<String, String> configurations;
     private LocalDateTime deploymentTime;
     private static HealthcareApplication currentInstance;
@@ -19,7 +17,7 @@ public class HealthcareApplication {
         this.version = version;
         this.configurations = new HashMap<>();
         this.deploymentTime = LocalDateTime.now();
-    } */
+    }
 
     public static void main(String[] args) {
         try {
@@ -33,7 +31,7 @@ public class HealthcareApplication {
             ;
         }
     }
-/* 
+
     public static void deploy(HealthcareApplication newInstance) {
         previousInstance = currentInstance;
         currentInstance = newInstance;
@@ -68,5 +66,5 @@ public class HealthcareApplication {
     public LocalDateTime getDeploymentTime() {
         return deploymentTime;
     }
-        */
+        
 }
