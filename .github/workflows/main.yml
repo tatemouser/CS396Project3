@@ -113,7 +113,7 @@ jobs:
           port: 22000
           script: |
             curl -fsSL https://get.docker.com -o get-docker.sh
-            sh get-docker.sh
+            sudo sh get-docker.sh
             docker pull ${{secrets.DOCKER_USERNAME}}/project3:latest 
             docker stop project3_container || true
             docker rm project3_container || true
