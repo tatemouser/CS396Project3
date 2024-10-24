@@ -122,10 +122,10 @@ jobs:
             sudo -S apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
             echo "Docker installed."
-            docker pull ${{secrets.DOCKER_USERNAME}}/project3:latest 
-            docker stop project3_container || true
-            docker rm project3_container || true
-            docker run -d --name project3_container -p 22:22 ${{secrets.DOCKER_USERNAME}}/project3:latest 
+            sudo docker pull ${{secrets.DOCKER_USERNAME}}/project3:latest 
+            sudo docker stop project3_container || true
+            sudo docker rm project3_container || true
+            sudo docker run -d --name project3_container -p 22:22 ${{secrets.DOCKER_USERNAME}}/project3:latest 
 
       # Report status
       - name: Report status
