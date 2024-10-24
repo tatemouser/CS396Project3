@@ -1,5 +1,5 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: Healthcare CI/CD Pipeline
+run-name: ${{ github.actor }} is running the Healthcare CI/CD Pipeline 🏥
 
 on: [push]
 
@@ -16,46 +16,61 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      # Create build directories
       - name: Create build directories
         run: |
           mkdir -p build/classes
           mkdir -p build/test-classes
           mkdir -p build/reports/jacoco
 
-      # Compile test framework first
+      # Compile healthcare core components first
+      - name: Compile Healthcare Core
+        run: |
+          javac -d build/classes \
+          -cp "libs/*" \
+          $(find src/main/healthcare -name "*.java")
+
+      # Compile models
+      - name: Compile Models
+        run: |
+          javac -d build/classes \
+          -cp "libs/*:build/classes" \
+          $(find src/main/models -name "*.java")
+
+      # Compile test framework
       - name: Compile Test Framework
         run: |
           javac -d build/test-classes \
-          -cp "libs/*" \
+          -cp "libs/*:build/classes" \
           $(find src/test/framework -name "*.java")
 
-      # Compile main classes
-      - name: Compile Java code
-        run: |
-          javac -d build/classes \
-          -cp "libs/*:src/main" \
-          $(find src/main -name "*.java")
-
-      # Compile remaining test classes
-      - name: Compile Test code
+      # Compile test classes
+      - name: Compile Tests
         run: |
           javac -d build/test-classes \
           -cp "libs/*:build/classes:build/test-classes" \
           $(find src/test -name "*.java" ! -path "*/framework/*")
+
+      # Run Security Scan
+      - name: Security Scan
+        run: |
+          echo "Running security scan..."
+          # Add actual security scanning tool here
 
       # Run Tests with JaCoCo
       - name: Run Tests
         run: |
           java -javaagent:libs/jacocoagent.jar=destfile=build/reports/jacoco/jacoco.exec \
           -cp "libs/*:build/classes:build/test-classes" \
-          org.junit.runner.JUnitCore test.DisasterEventTest
+          org.junit.runner.JUnitCore \
+          test.healthcare.IntegrationTest \
+          test.healthcare.SecurityTest \
+          test.models.PatientTest \
+          test.models.MedicalTeamTest
 
       # Generate JaCoCo Report
       - name: Generate JaCoCo Report
         run: |
-          java -cp "libs/*:build/classes:build/test-classes:libs/jacococli.jar" \
-          org.jacoco.cli.internal.Main report build/reports/jacoco/jacoco.exec \
+          java -jar libs/jacococli.jar report build/reports/jacoco/jacoco.exec \
           --classfiles build/classes \
           --sourcefiles src/main \
           --html build/reports/jacoco/html \
@@ -69,7 +84,21 @@ jobs:
           name: jacoco-reports
           path: build/reports/jacoco/html/
 
+      # Deploy to Staging if on develop branch
+      - name: Deploy to Staging
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          echo "Deploying to staging environment..."
+          # Add your staging deployment commands here
+
+      # Deploy to Production if on main branch
+      - name: Deploy to Production
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Deploying to production environment..."
+          # Add your production deployment commands here
+
       # Report status
       - name: Report status
         if: always()
-        run: echo "🍏 This job's status is ${{ job.status }}."
+        run: echo "🏥 Pipeline status is ${{ job.status }}"
