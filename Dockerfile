@@ -9,7 +9,7 @@ COPY src/ /app/src
 COPY bin/ /app/bin
 COPY libs/ /app/libs
 
-RUN javac -d /app/bin src/models/*.java src/services/*.java src/main/*.java
+RUN javac -d /app/bin /app/src/**/*.java
 
 
 # Set the command to run your application
