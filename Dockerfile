@@ -9,10 +9,8 @@ COPY src/ /app/src
 COPY bin/ /app/bin
 COPY libs/ /app/libs
 
-# Compile the Java application (assuming javac is used to compile manually)
-RUN javac -d /app/bin /app/src/main/healthcare/**/*.java
-
+RUN javac -d /app/bin src/models/*.java src/services/*.java src/main/*.java
 
 
 # Set the command to run your application
-CMD ["java", "-cp", "/app/bin:/app/libs/*", "main.healthcare.HealthcareApplication"]
+CMD ["java", "-cp", "app/bin", "main.MainApplication"]
