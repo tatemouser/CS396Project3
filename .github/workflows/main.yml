@@ -125,7 +125,7 @@ jobs:
             sudo docker pull ${{secrets.DOCKER_USERNAME}}/project3:latest 
             sudo docker stop project3_container || true
             sudo docker rm project3_container || true
-            sudo docker run -d --name project3_container -p 22:22 ${{secrets.DOCKER_USERNAME}}/project3:latest 
+            echo ${{secrets.SSH_PASSWORD}} | sudo -S docker run -d --name project3_container -p 22:22 ${{secrets.DOCKER_USERNAME}}/project3:latest 
 
       # Report status
       - name: Report status
