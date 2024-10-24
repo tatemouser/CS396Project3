@@ -15,4 +15,4 @@ RUN javac -d /app/bin /app/src/main/healthcare/**/*.java
 
 
 # Set the command to run your application
-CMD ["java", "-cp", "/app/bin:/app/libs/*", "healthcare.HealthcareApplication"]
+CMD ["java", "-cp", "/app/bin:/app/libs/*", "main.healthcare.HealthcareApplication"]
