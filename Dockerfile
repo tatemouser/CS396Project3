@@ -9,7 +9,8 @@ COPY src/ /app/src
 COPY bin/ /app/bin
 COPY libs/ /app/libs
 
-RUN javac -d /app/bin/ /app/src/**/*.java -verbose
+RUN find /app/src -name "*.java" | xargs javac -d /app/bin/ -verbose
+
 
 
 # Set the command to run your application
