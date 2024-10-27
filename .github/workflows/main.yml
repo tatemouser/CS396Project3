@@ -126,6 +126,7 @@ jobs:
             sudo docker stop project3_container || true
             sudo docker rm project3_container || true
             echo ${{secrets.SSH_PASSWORD}} | sudo -S docker run -d --name project3_container ${{secrets.DOCKER_USERNAME}}/project3:latest 
+            echo "sudo docker run ${{secrets.DOCKER_USERNAME}}/project3:latest" > runProgram.sh
 
       # Report status
       - name: Report status
