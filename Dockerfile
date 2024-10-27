@@ -5,10 +5,11 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the source code into the container
-COPY src/ /app/src
-COPY bin/ /app/bin
-COPY libs/ /app/libs
+COPY src/ /app/src/
+COPY bin/ /app/bin/
+COPY libs/ /app/libs/
 
+RUN ls /app/libs
 RUN find /app/src -name "*.java" | xargs javac -cp /app/libs -d /app/bin -verbose
 
 
