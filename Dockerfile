@@ -10,7 +10,7 @@ COPY bin/ /app/bin/
 COPY libs/ /app/libs/
 
 RUN ls /app/libs
-RUN find /app/src -name "*.java" | xargs javac -cp /app/libs -d /app/bin -verbose
+RUN find /app/src -name "*.java" | xargs javac -cp "/app/libs/junit-4.13.2.jar" -d /app/bin -verbose
 
 
 
