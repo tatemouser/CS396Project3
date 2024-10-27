@@ -13,5 +13,6 @@ public class MainApplication {
         var2.setOnCall(true);
         System.out.println(var1);
         System.out.println(var2);
+        System.out.println("Making a minor change to the code.");
     }
  }
