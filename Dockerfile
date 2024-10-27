@@ -9,11 +9,11 @@ COPY src/ /app/src/
 COPY bin/ /app/bin/
 COPY libs/ /app/libs/
 
-RUN ls /app/libs
+RUN ls /app/bin
 RUN find /app/src -name "*.java" | xargs javac -cp "/app/libs/junit-4.13.2.jar" -d /app/bin -verbose
 
 
 
 # Set the command to run your application
 # THIS DOES NOT WORK for some reason
-CMD ["java", "-cp", "app/bin/", "main.MainApplication", "-verbose:class"]
+CMD ["java", "-cp", "/app/bin/", "main.MainApplication", "-verbose:class"]
