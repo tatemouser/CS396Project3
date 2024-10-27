@@ -125,7 +125,7 @@ jobs:
             sudo docker pull ${{secrets.DOCKER_USERNAME}}/project3:latest 
             sudo docker stop project3_container || true
             sudo docker rm project3_container || true
-            echo "sudo -S docker run -d --name project3_container ${{secrets.DOCKER_USERNAME}}/project3:latest" > runProgram.sh
+            echo "sudo -S docker run -dq --name project3_container ${{secrets.DOCKER_USERNAME}}/project3:latest" > runProgram.sh
             chmod +x runProgram.sh
 
       # Report status
